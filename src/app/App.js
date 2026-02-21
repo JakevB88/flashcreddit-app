@@ -1,25 +1,16 @@
 import React from "react";
-import {Route, BroserRouter, Routes} from "react-router-dom";
+import {Route, BrowserRouter, Routes} from "react-router-dom";
+import Posts from "../Features/posts/Posts.js";
+import AppLayout from "./AppLayout.js";
 
-
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<AppLayout/>}>
+          <Route path="posts" element={<Posts/>}/>
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  )
 }
-
-export default App;
