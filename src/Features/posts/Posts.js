@@ -6,11 +6,12 @@ import {React, useEffect} from "react";
 import { Link } from "react-router-dom";
 import ROUTES from "../../app/routes";
 import { useDispatch, useSelector } from "react-redux";
-import { selectPosts } from "./PostsSlice";
+import { postsSlice, selectPosts } from "./PostsSlice";
 import { fetchPosts } from "./PostsSlice";
+import Post from "./Post";
 
 export default function Posts() {
-  const posts = useSelector(selectPosts); // Retreive the state for quizzes
+  const posts = useSelector(selectPosts); // Retreive the state for Posts
   const dispatch = useDispatch();
 
   //Dispatch
@@ -19,19 +20,15 @@ export default function Posts() {
     dispatch(fetchPosts())
   }, [dispatch]);
   
-  
 
 
   return (
     <section className="center">
       <h1>Posts</h1>
       <ul className="posts-list">
-        {console.log(`posts`)}
         {Object.values(posts).map((post) => (
           <li key={post.name} className="post">
-            <Link to={ROUTES.postRoute(post.name)}>
-              {post.title}
-            </Link>
+            <Post post={post}/>
           </li>
         ))}
       </ul>

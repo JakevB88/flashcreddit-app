@@ -1,32 +1,92 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { Link, useParams, Navigate } from "react-router-dom";
-import Card from "../cards/Card";
-import ROUTES from "../../app/routes";
-// import quiz selector
-import { selectQuizzes } from "./QuizzesSlice";
-
-export default function Post() {
-  const quizzes = useSelector(selectQuizzes); // replace this with a call to your selector to get all the quizzes in state
-  const { quizId } = useParams();
-  const quiz = quizzes[quizId];
-
-  if(!quiz) {
-    return <Navigate to={ROUTES.quizzesRoute()} replace/>
-  }
 
 
-  return (
-    <section>
-      <h1>{quiz.name}</h1>
-      <ul className="cards-list">
-        {quiz.cardIds.map((id) => (
-          <Card key={id} id={id} />
-        ))}
-      </ul>
-      <Link to={ROUTES.newQuizRoute()} className="button center">
-        Create a New Quiz
-      </Link>
-    </section>
-  );
+export function normalisePost(raw) {
+    const isVideo =
+        raw.is_video && raw.media?.reddit_video?.fallback_url;
+
+    const isImage =
+        raw.post_hint === "image" ||
+        (raw.url && raw.url.match(/\.(jpg|jpeg|png|gif)$/i));
+
+    const isGallery =
+        raw.is_gallery && raw.gallery_data;
+
+    const isText =
+        raw.selftext && raw.selftext.length > 0;
+    
+    
+    const isLink =
+        raw.post_hint === "link" &&
+        !raw.is_video &&
+        !raw.is_gallery &&
+        !raw.selftext;
+
+    return {
+        ...raw,
+        isVideo,
+        isImage,
+        isGallery,
+        isText,
+        isLink
+    };
 }
+
+
+function GalleryComponent({ data }) {
+    return (
+        <div>
+            {data.items.map(item => (
+                <img
+                    key={item.media_id}
+                    src={`https://i.redd.it/${item.media_id}.jpg`}
+                    alt=""
+                    style={{ maxWidth: "100%", marginBottom: "1rem" }}
+                />
+            ))}
+        </div>
+)}
+
+
+
+export default function Post({ post }) {
+    const np = normalisePost(post)
+    console.log(post.subreddit)
+    console.log(post)
+    return (
+        <article className="post">
+            <h2>{np.title}</h2>
+
+            <p>Author: {np.author}</p>
+            <p>Subreddit: {np.subreddit}</p>
+
+                        
+            {np.isText && <p>{np.selftext}</p>}
+
+            {np.isImage && <img src={np.url} alt={np.title} />}
+
+            {np.isVideo && (
+                <video controls>
+                    <source
+                        src={np.media.reddit_video.fallback_url}
+                        type="video/mp4"
+                    />
+                </video>
+            )}
+
+            {np.isGallery && <GalleryComponent data={np.gallery_data} />}
+
+            
+            {np.isLink && (
+                <p>
+                    <a href={np.url} target="_blank" rel="noopener noreferrer">
+                        {np.url}
+                    </a>
+                </p>
+            )}
+
+            
+        </article>
+    );
+}
+
