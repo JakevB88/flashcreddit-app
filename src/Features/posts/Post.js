@@ -57,16 +57,16 @@ export default function Post({ post }) {
         <article className="post">
             <h2>{np.title}</h2>
 
-            <p>Author: {np.author}</p>
-            <p>Subreddit: {np.subreddit}</p>
+            <p className="author">Author: {np.author}</p>
+            <p className="subreddit">Subreddit: {np.subreddit}</p>
 
                         
             {np.isText && <p>{np.selftext}</p>}
 
-            {np.isImage && <img src={np.url} alt={np.title} />}
+            {np.isImage && <img className="image" src={np.url} alt={np.title} />}
 
             {np.isVideo && (
-                <video controls>
+                <video className="video" controls>
                     <source
                         src={np.media.reddit_video.fallback_url}
                         type="video/mp4"

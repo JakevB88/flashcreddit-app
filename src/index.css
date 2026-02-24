@@ -1,18 +1,51 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background-color: black;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-
-.post, .center {
+.posts {
+  max-width: 800px;
+  margin: 0 auto; /*to center the post again*/
   text-align: center;
+  
+}
+
+.post {
+  background-color: black;
+  color: aliceblue;
+  max-width: 800px;
+  margin: 15px ; /*to center the post again*/
+  text-align: center;
+  border: 4px solid grey;
+  border-radius: 1dvh;
+  padding: 5px
+}
+
+
+
+.posts-list {
+  list-style: none;
+}
+
+.image, .video {
+  max-width: 800px;
+  width: 90%;
+  margin-bottom: 20px;
+}
+
+h2 {
+  text-align: left;
+  margin-left: 5%;
+  margin-right: 5%;
+  display: block;
+}
+
+.author {
+  margin-left: 5%;
+  float: left;
+}
+
+
+.subreddit {
+  margin-right: 5%;
+  float: right;
 }

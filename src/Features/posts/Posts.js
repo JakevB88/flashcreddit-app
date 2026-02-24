@@ -14,20 +14,27 @@ export default function Posts() {
   const posts = useSelector(selectPosts); // Retreive the state for Posts
   const dispatch = useDispatch();
 
+  //check if there is data to display in the store
+  const isEmpty = !posts
+
   //Dispatch
   //useaffect only runs when the page is loaded
   useEffect(() => {
+    if (isEmpty) {
+      dispatch(fetchPosts())
+    }
+
     dispatch(fetchPosts())
   }, [dispatch]);
   
 
 
   return (
-    <section className="center">
-      <h1>Posts</h1>
+    <section className="posts">
+      <h1>FlashcReddit</h1>
       <ul className="posts-list">
         {Object.values(posts).map((post) => (
-          <li key={post.name} className="post">
+          <li key={post.name} className="list">
             <Post post={post}/>
           </li>
         ))}
