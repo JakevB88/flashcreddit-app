@@ -51,8 +51,8 @@ function GalleryComponent({ data }) {
 
 export default function Post({ post }) {
     const np = normalisePost(post)
-    console.log(post.subreddit)
-    console.log(post)
+    //console.log(post.subreddit)
+    //console.log(post)
     return (
         <article className="post">
             <h2>{np.title}</h2>
