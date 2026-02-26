@@ -14,20 +14,18 @@ export default function Posts() {
   const posts = useSelector(selectPosts); // Retreive the state for Posts
   const dispatch = useDispatch();
 
-  //check if there is data to display in the store
-  const isEmpty = !posts
 
-  //Dispatch
-  //useaffect only runs when the page is loaded
-  useEffect(() => {
-    if (isEmpty) {
-      dispatch(fetchPosts())
+  // Fetch once on first mount if there is no data
+    useEffect(() => {
+      if (Object.keys(posts).length === 0) {
+        dispatch(fetchPosts());
+      }
+    }, [dispatch, posts]);
+
+    // Handle loading / empty state before .map()
+    if (!posts) {
+      return <div>Loading...</div>;
     }
-
-    dispatch(fetchPosts())
-  }, [dispatch]);
-  
-
 
   return (
     <section className="posts">
