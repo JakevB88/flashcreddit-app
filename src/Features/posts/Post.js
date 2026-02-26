@@ -37,11 +37,10 @@ function GalleryComponent({ data }) {
     return (
         <div>
             {data.items.map(item => (
-                <img
+                <img className="image"
                     key={item.media_id}
                     src={`https://i.redd.it/${item.media_id}.jpg`}
                     alt=""
-                    style={{ maxWidth: "100%", marginBottom: "1rem" }}
                 />
             ))}
         </div>
@@ -52,7 +51,7 @@ function GalleryComponent({ data }) {
 export default function Post({ post }) {
     const np = normalisePost(post)
     //console.log(post.subreddit)
-    //console.log(post)
+    console.log(post)
     return (
         <article className="post">
             <h2>{np.title}</h2>
