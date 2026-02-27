@@ -20,6 +20,10 @@ body {
   padding: 20px
 }
 
+.post:onhover {
+  opacity: 0.8;
+}
+
 
 
 .posts-list {
