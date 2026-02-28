@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import ROUTES from "../../app/routes";
 import { useDispatch, useSelector } from "react-redux";
 import { commentsSlice, selectComments, fetchComments} from "./CommentsSlice";
-import comment from "./Comments";
+import Comment from "./Comments";
 
 export default function Comments() {
   const comments = useSelector(selectComments); // Retreive the state for Comments from the store
@@ -33,7 +33,7 @@ export default function Comments() {
       <ul className="Comments-list">
         {Object.values(comments).map((comment) => (
           <li key={comment.name} className="list">
-            <Comments comment={comment}/>
+            <Comment comment={comment}/>
           </li>
         ))}
       </ul>
