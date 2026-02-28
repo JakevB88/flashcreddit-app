@@ -6,8 +6,7 @@ import {React, useEffect} from "react";
 import { Link } from "react-router-dom";
 import ROUTES from "../../app/routes";
 import { useDispatch, useSelector } from "react-redux";
-import { postsSlice, selectPosts } from "./PostsSlice";
-import { fetchPosts } from "./PostsSlice";
+import { postsSlice, selectPosts, fetchPosts } from "./PostsSlice";
 import Post from "./Post";
 
 export default function Posts() {
@@ -33,7 +32,7 @@ export default function Posts() {
       <ul className="posts-list">
         {Object.values(posts).map((post) => (
           <li key={post.name} className="list">
-            <Post post={post}/>
+            <Post post={post} showCommentsIcon={true} showHomeIcon={false}/>
           </li>
         ))}
       </ul>

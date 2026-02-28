@@ -3,20 +3,31 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 // import the posts via the Reddit Json API
 export const fetchComments = createAsyncThunk(
-    "comments/fetchComments",
-    async ({postId, Permalink}) => {
-        const res = await fetch(`https://corsproxy.io/?https://www.reddit.com${Permalink.replace(/\/$/,"")}json?raw_json=1`);
-        if (!res.ok) {
-            throw new Error(`Failed to fetch comments: ${res.status} ${res.statusText}`);
-        }
-        const json = await res.json();
-        return ;
-    }
+  "comments/fetchComments",
+  async ({ permalink }) => {
+
+    const url = `https://www.reddit.com${permalink.replace(/\/$/, "")}.json?raw_json=1`;
+
+    const res = await fetch(url);
+    const json = await res.json();
+
+    // Reddit returns [postListing, commentsListing]
+    const commentsListing = json[1].data.children;
+
+    // Extract only comment items
+    const comments = commentsListing
+      .filter(c => c.kind === "t1")
+      .map(c => c.data);
+
+    return comments; 
+  }
 );
 
 
 
+
 export const commentsSlice = createSlice({
+    
     name: 'comments',   //in the store this slice will be registered as "state.posts"
     initialState: { //set initial state for each post
         comments: {},
@@ -35,12 +46,12 @@ export const commentsSlice = createSlice({
         })
         .addCase(fetchComments.fulfilled, (state, action) => {
             state.status = "succeeded";
-            state.posts = {};
+            state.comments = action.payload;
             
-            {/*move data retreived via the API from the payload into the stores state.posts object with the post.id as the key*/}
+            {/*move data retreived via the API from the payload into the stores state.posts object with the post.id as the key
             action.payload.forEach((post) => {
-            state.posts[post.name] = post;
-            });
+            state.comments[post.name] = post;
+            });*/}
         })
         .addCase(fetchComments.rejected, (state, action) => {
             state.status = "failed";

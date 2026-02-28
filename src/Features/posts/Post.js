@@ -58,7 +58,7 @@ function unixToDate(unix) {
 
 
 
-export default function Post({ post }) {
+export default function Post({ post, showCommentsIcon }) {
     const np = normalisePost(post)
     //console.log(post.subreddit)
     //console.log(post)
@@ -98,10 +98,11 @@ export default function Post({ post }) {
             )}
 
             <p className="created">Created: {unixToDate(np.created)}</p>
+            {showCommentsIcon && (
             <Link to={ROUTES.commentsRoute(post.name)} className="commentIconLink">
                     <img className="commentIcon" src={commentIcon} alt="comments"/>
             </Link>
-
+            )}
             
         </article>
         

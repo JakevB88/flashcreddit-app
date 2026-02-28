@@ -54,6 +54,9 @@ to be used like: "const posts = useSelector(selectPosts);"
 */
 export const selectPosts = (state) => state.posts.posts
 
+export const selectPostByName = (state, name) =>
+  state.posts.posts[name];
+
 //Action export
 
 //reducer
