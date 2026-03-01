@@ -5,36 +5,41 @@ import commentIcon from "./comment.png";
 
 
 
+
 export function normalisePost(raw) {
-    const isVideo =
-        raw.is_video && raw.media?.reddit_video?.fallback_url;
+  // Handle both listing child shape and direct post data
+  const d = raw?.data ?? raw ?? {};
 
-    const isImage =
-        raw.post_hint === "image" ||
-        (raw.url && raw.url.match(/\.(jpg|jpeg|png|gif)$/i));
+  // Pre-calc optional values
+  const videoUrl = d.media?.reddit_video?.fallback_url ?? null;
 
-    const isGallery =
-        raw.is_gallery && raw.gallery_data;
+  const isVideo = Boolean(d.is_video && videoUrl);
 
-    const isText =
-        raw.selftext && raw.selftext.length > 0;
-    
-    
-    const isLink =
-        raw.post_hint === "link" &&
-        !raw.is_video &&
-        !raw.is_gallery &&
-        !raw.selftext;
+  const isImage =
+    d.post_hint === 'image' ||
+    (typeof d.url === 'string' && /\.(jpg|jpeg|png|gif)$/i.test(d.url));
 
-    return {
-        ...raw,
-        isVideo,
-        isImage,
-        isGallery,
-        isText,
-        isLink
-    };
+  const isGallery = Boolean(d.is_gallery && d.gallery_data);
+
+  const isText = Boolean(d.selftext && d.selftext.length > 0);
+
+  const isLink =
+    d.post_hint === 'link' &&
+    !d.is_video &&
+    !d.is_gallery &&
+    !d.selftext;
+
+  return {
+    ...d,             // spread the *data* object, not the wrapper
+    isVideo,
+    isImage,
+    isGallery,
+    isText,
+    isLink,
+    videoUrl,         // expose for safe use in render
+  };
 }
+
 
 
 function GalleryComponent({ data }) {
@@ -69,11 +74,12 @@ export default function Post({ post, showCommentsIcon }) {
             <h2>{np.title}</h2>
                 
                    
+            <div className="postHeader">
+                <p className="author">Author: {np.author}</p>
+                <p className="subreddit">Subreddit: {np.subreddit}</p>
+            </div>
 
-            <p className="author">Author: {np.author}</p>
-            <p className="subreddit">Subreddit: {np.subreddit}</p>
-             
-            {np.isText && <p>{np.selftext}</p>}
+            {np.isText && <p className="postText">{np.selftext}</p>}
 
             {np.isImage && <img className="image" src={np.url} alt={np.title} />}
 
@@ -97,12 +103,14 @@ export default function Post({ post, showCommentsIcon }) {
                 </p>
             )}
 
-            <p className="created">Created: {unixToDate(np.created)}</p>
-            {showCommentsIcon && (
-            <Link to={ROUTES.commentsRoute(post.name)} className="commentIconLink">
-                    <img className="commentIcon" src={commentIcon} alt="comments"/>
-            </Link>
-            )}
+            <div className="postFooter">
+                <p className="created">Created: {unixToDate(np.created)}</p>
+                {showCommentsIcon && (
+                <Link to={ROUTES.commentsRoute(post.name)} className="commentIconLink">
+                        <img className="commentIcon" src={commentIcon} alt="comments"/>
+                </Link>
+                )}
+            </div>
             
         </article>
         

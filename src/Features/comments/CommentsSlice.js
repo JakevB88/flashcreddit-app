@@ -6,8 +6,8 @@ export const fetchComments = createAsyncThunk(
   "comments/fetchComments",
   async ({ permalink }) => {
 
-    const url = `https://www.reddit.com${permalink.replace(/\/$/, "")}.json?raw_json=1`;
-
+    const url = `https://old.reddit.com${permalink.replace(/\/$/, "")}.json?raw_json=1`;
+    console.log(url)
     const res = await fetch(url);
     const json = await res.json();
 
@@ -17,8 +17,8 @@ export const fetchComments = createAsyncThunk(
     // Extract only comment items
     const comments = commentsListing
       .filter(c => c.kind === "t1")
-      .map(c => c.data);
-
+      .map(c => c.data)
+      .filter(c => c.author !== 'AutoModerator');;
     return comments; 
   }
 );
@@ -30,7 +30,7 @@ export const commentsSlice = createSlice({
     
     name: 'comments',   //in the store this slice will be registered as "state.posts"
     initialState: { //set initial state for each post
-        comments: {},
+        comments: [],
         status: "idle",
         error: null
     },

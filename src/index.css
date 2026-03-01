@@ -2,14 +2,15 @@ body {
   background-color: black;
 }
 
-.posts {
+.posts, .comments {
+  color: aliceblue;
   max-width: 800px;
   margin: 0 auto; /*to center the post again*/
   text-align: center;
   
 }
 
-.post, .comments {
+.post, .comment {
   background-color: black;
   color: aliceblue;
   max-width: 800px;
@@ -20,7 +21,7 @@ body {
   padding: 20px
 }
 
-.posts-list {
+.posts-list, .comments-list {
   list-style: none;
 }
 
@@ -35,10 +36,7 @@ body {
   width: 50px;
   height: 50px;
   border-radius: 15px;
-  margin-top: 10px;
-  margin-bottom: 5px;
-  display: block;        /* ensures clean placement */
-  margin-left: 5%;     
+  margin-left: 5%; 
 }
 
 .homeIcon, .homeIconLink {
@@ -60,20 +58,24 @@ body {
 }
 
 
-h2 {
+h2, .postText {
   text-align: left;
   margin-left: 5%;
   margin-right: 5%;
   display: block;
 }
 
-.author {
+.postHeader, .postFooter {
+  display: flex;
+  justify-content: space-between;
+}
+
+.author  {
   margin-left: 5%;
-  float: left;
 }
 
 
 .subreddit, .created {
   margin-right: 5%;
-  float: right;
+  
 }
