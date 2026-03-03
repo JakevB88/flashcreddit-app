@@ -5,7 +5,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 export const fetchComments = createAsyncThunk(
   "comments/fetchComments",
   async ({ permalink }) => {
-
+    const safePermalink = permalink.startsWith('/') ? permalink : `/${permalink}`;
     const url = `https://old.reddit.com${permalink.replace(/\/$/, "")}.json?raw_json=1`;
     console.log(url)
     const res = await fetch(url);
@@ -18,58 +18,60 @@ export const fetchComments = createAsyncThunk(
     const comments = commentsListing
       .filter(c => c.kind === "t1")
       .map(c => c.data)
-      .filter(c => c.author !== 'AutoModerator');;
-    return comments; 
+      .filter(c => c.author !== 'AutoModerator');
+    return  {permalink: safePermalink, comments }; 
   }
 );
 
 
 
 
+
+
+const initialThread = () => ({ items: [], status: 'idle', error: null });
+
 export const commentsSlice = createSlice({
-    
-    name: 'comments',   //in the store this slice will be registered as "state.posts"
-    initialState: { //set initial state for each post
-        comments: [],
-        status: "idle",
-        error: null
-    },
-
-    /*the ruducers allow the state to be updated"
-    */
-    reducers: {},
-    
-    extraReducers: (builder) => {
-        builder
-        .addCase(fetchComments.pending, (state) => {
-            state.status = "loading";
-        })
-        .addCase(fetchComments.fulfilled, (state, action) => {
-            state.status = "succeeded";
-            state.comments = action.payload;
-            
-            {/*move data retreived via the API from the payload into the stores state.posts object with the post.id as the key
-            action.payload.forEach((post) => {
-            state.comments[post.name] = post;
-            });*/}
-        })
-        .addCase(fetchComments.rejected, (state, action) => {
-            state.status = "failed";
-            state.error = action.error.message;
-        });
-    }
-
+  name: 'comments',
+  initialState: {
+    byPermalink: {} // { [permalink]: { items, status, error } }
+  },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchComments.pending, (state, action) => {
+        const permalink = action.meta.arg.permalink.startsWith('/')
+          ? action.meta.arg.permalink
+          : `/${action.meta.arg.permalink}`;
+        state.byPermalink[permalink] = state.byPermalink[permalink] || initialThread();
+        state.byPermalink[permalink].status = 'loading';
+        state.byPermalink[permalink].error = null;
+      })
+      .addCase(fetchComments.fulfilled, (state, action) => {
+        const { permalink, comments } = action.payload;
+        state.byPermalink[permalink] = state.byPermalink[permalink] || initialThread();
+        state.byPermalink[permalink].status = 'succeeded';
+        state.byPermalink[permalink].items = comments;
+      })
+      .addCase(fetchComments.rejected, (state, action) => {
+        const permalink = action.meta.arg.permalink.startsWith('/')
+          ? action.meta.arg.permalink
+          : `/${action.meta.arg.permalink}`;
+        state.byPermalink[permalink] = state.byPermalink[permalink] || initialThread();
+        state.byPermalink[permalink].status = 'failed';
+        state.byPermalink[permalink].error = action.error.message;
+      });
+  }
 });
 
+export const selectCommentsForPermalink = (state, permalink) => {
+  const safe = permalink?.startsWith('/') ? permalink : `/${permalink ?? ''}`;
+  return state.comments.byPermalink[safe]?.items ?? [];
+};
 
-//selector
-/*Selectors are convenience functions that read data from the Redux store.
-to be used like: "const posts = useSelector(selectPosts);"
-*/
-export const selectComments = (state) => state.comments.comments
+export const selectCommentsStatusForPermalink = (state, permalink) => {
+  const safe = permalink?.startsWith('/') ? permalink : `/${permalink ?? ''}`;
+  return state.comments.byPermalink[safe]?.status ?? 'idle';
+};
 
-//Action export
-
-//reducer
-//export the reducer so it can be added to the store
 export default commentsSlice.reducer;
+

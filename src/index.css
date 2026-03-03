@@ -50,14 +50,6 @@ body {
   margin-bottom: 10px;     
 }
 
-
-.commentsHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-
 h2, .postText {
   text-align: left;
   margin-left: 5%;
@@ -65,17 +57,23 @@ h2, .postText {
   display: block;
 }
 
-.postHeader, .postFooter {
+.postHeader, .postFooter, .commentsHeader, .commentHeader {
   display: flex;
   justify-content: space-between;
 }
 
-.author  {
+.author, .commentBody  {
+  text-align: left;
   margin-left: 5%;
 }
 
 
 .subreddit, .created {
+  text-align: right;
   margin-right: 5%;
+  
+}
+
+.searchForm {
   
 }

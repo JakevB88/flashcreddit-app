@@ -8,6 +8,8 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { commentsSlice, selectComments, fetchComments} from "./CommentsSlice";
 import { selectPostByName } from "../posts/PostsSlice";
+import { selectCommentsForPermalink } from "./CommentsSlice";
+import { selectCommentsStatusForPermalink } from "./CommentsSlice";
 import Comment from "./Comment";
 import Post from "../posts/Post";
 import homeIcon from "./home.png"
@@ -18,21 +20,28 @@ export default function Comments() {
 
   const post = useSelector(state => selectPostByName(state, name));
   
+  const permalink = post?.permalink;
 
-  const comments = useSelector(selectComments)
+  const comments = useSelector((s) => selectCommentsForPermalink(s, permalink));
+  const status = useSelector((s) => selectCommentsStatusForPermalink(s, permalink));
+
+
   const dispatch = useDispatch();
   
   // Fetch once on first mount if there is no data
+  
   useEffect(() => {
-    if (post?.permalink && Array.isArray(comments) && comments.length === 0) {
-      console.log("Dispatching fetchComments()", post.permalink);
-      dispatch(fetchComments({ permalink: post.permalink }));
+    if (!permalink) return;
+    if (status === 'idle') {
+      dispatch(fetchComments({ permalink }));
     }
-  }, [dispatch, post, comments]);
+  }, [dispatch, permalink, status]);
 
 
-  console.log("comments")
+
+  console.log(`comments: ${comments.name}`)
   console.log(comments)
+  console.log(post)
 
 
   return (

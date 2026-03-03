@@ -6,6 +6,7 @@ import commentIcon from "./comment.png";
 
 
 
+
 export function normalisePost(raw) {
   // Handle both listing child shape and direct post data
   const d = raw?.data ?? raw ?? {};
@@ -104,12 +105,12 @@ export default function Post({ post, showCommentsIcon }) {
             )}
 
             <div className="postFooter">
-                <p className="created">Created: {unixToDate(np.created)}</p>
                 {showCommentsIcon && (
                 <Link to={ROUTES.commentsRoute(post.name)} className="commentIconLink">
                         <img className="commentIcon" src={commentIcon} alt="comments"/>
                 </Link>
                 )}
+                <p className="created">Created: {unixToDate(np.created)}</p>
             </div>
             
         </article>
