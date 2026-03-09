@@ -17,12 +17,10 @@ import ROUTES from "../../app/routes";
 
 export default function Comments() {
   const { name } = useParams();
-
   const post = useSelector(state => selectPostByName(state, name));
-  
   const permalink = post?.permalink;
 
-  const comments = useSelector((s) => selectCommentsForPermalink(s, permalink));
+  const comments = useSelector((s) => selectCommentsForPermalink(s, permalink)) || [];
   const status = useSelector((s) => selectCommentsStatusForPermalink(s, permalink));
 
 
@@ -39,8 +37,8 @@ export default function Comments() {
 
 
 
-  console.log(`comments: ${comments.name}`)
-  console.log(comments)
+  //console.log(`comments: ${comments.name}`)
+  //console.log(comments)
   console.log(post)
 
 

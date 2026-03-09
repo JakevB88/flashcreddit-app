@@ -65,7 +65,7 @@ export const commentsSlice = createSlice({
 
 export const selectCommentsForPermalink = (state, permalink) => {
   const safe = permalink?.startsWith('/') ? permalink : `/${permalink ?? ''}`;
-  return state.comments.byPermalink[safe]?.items ?? [];
+  return state.comments.byPermalink[safe]?.items;
 };
 
 export const selectCommentsStatusForPermalink = (state, permalink) => {

@@ -2,8 +2,8 @@
 PostsSlice will load the data to the store.
 */
 
-import {React, useEffect} from "react";
-import { Link } from "react-router-dom";
+import {React, useEffect, useState, useMemo} from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import ROUTES from "../../app/routes";
 import { useDispatch, useSelector } from "react-redux";
 import { postsSlice, selectPosts, fetchPosts } from "./PostsSlice";
@@ -14,25 +14,42 @@ export default function Posts() {
   const posts = useSelector(selectPosts); // Retreive the state for Posts
   const dispatch = useDispatch();
 
+  //read q from the URL
+  const [searchParams] =  useSearchParams();
+  const [q, setQ] = useState(searchParams.get('q') ?? '');
 
   // Fetch once on first mount if there is no data
-    useEffect(() => {
-      if (Object.keys(posts).length === 0) {
-        dispatch(fetchPosts());
-      }
-    }, [dispatch, posts]);
-
-    // Handle loading / empty state before .map()
-    if (!posts) {
-      return <div>Loading...</div>;
+  useEffect(() => {
+    if (!posts || Object.keys(posts).length === 0) {
+      dispatch(fetchPosts());
     }
+  }, [dispatch, posts]);
+
+  
+  // Derive a filtered list (case-insensitive)
+  const visiblePosts = useMemo(() => {
+    const all = Object.values(posts ?? {});
+    const term = q.trim().toLowerCase();
+    if (!term) return all;
+    return all.filter((post) =>
+      [post.title, post.author, post.body, post.summary, post.selftext]
+        .filter(Boolean)
+        .some((s) => s.toLowerCase().includes(term))
+    );
+  }, [posts, q]);
+
+
+  // Handle loading / empty state before .map()
+  if (!posts || Object.keys(posts).length === 0) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <section className="posts">
       <h1>FlashcReddit</h1>
-      <Search></Search>
+      <Search value={q} onChange={setQ}/>
       <ul className="posts-list">
-        {Object.values(posts).map((post) => (
+        {visiblePosts.map((post) => (
           <li key={post.name} className="list">
             <Post post={post} showCommentsIcon={true} showHomeIcon={false}/>
           </li>
