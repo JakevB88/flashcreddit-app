@@ -2,11 +2,10 @@
 PostsSlice will load the data to the store.
 */
 
-import {React, useEffect, useState, useMemo} from "react";
-import { Link, useSearchParams } from "react-router-dom";
-import ROUTES from "../../app/routes";
+import { useEffect, useState, useMemo } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { postsSlice, selectPosts, fetchPosts } from "./PostsSlice";
+import { selectPosts, fetchPosts } from "./PostsSlice";
 import Post from "./Post";
 import Search from "../search/Search";
 

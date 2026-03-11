@@ -9,9 +9,9 @@ export default function comment({ comment }) {
     return ( 
         <article className="comment">
             <div className="commentHeader">
-                <p className="author">Author: {comment.author}</p>
+                <p className="author">Author: <br /> {comment.author}</p>
                 <p className="score">⇧ {comment.score} ⇩</p>
-                <p className="created">Created: {unixToDate(comment.created)}</p>
+                <p className="created">Created: <br /> {unixToDate(comment.created)}</p>
             </div>
             <div>
                 <p className="commentBody"> {comment.body} </p>

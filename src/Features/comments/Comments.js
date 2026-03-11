@@ -48,14 +48,14 @@ export default function Comments() {
       <h1>FlashcReddit</h1>
       
       <div className="commentsHeader">
-        <h2 className="inline">Post</h2>
+        <h2>Post</h2>
+        <p></p>
         <Link to="/" className="homeIconLink">
           <img className="homeIcon" src={homeIcon} alt="home"/>
         </Link>
       </div>
       
-      <Post post={post} showCommentsIcon={false}/>
-      <h2>*****Comments*****</h2>        
+      <Post post={post} showCommentsIcon={false}/>  
       <ul className="comments-list">
         {comments.map((comment) => (
           <li key={comment.name} className="list">

@@ -89,9 +89,9 @@ export default function Post({ post, showCommentsIcon }) {
                 
                    
             <div className="postHeader">
-                <p className="author">Author: {np.author}</p>
+                <p className="author">Author: <br /> {np.author}</p>
                 <p className="score">⇧ {np.score} ⇩</p>
-                <p className="subreddit">Subreddit: {np.subreddit}</p>
+                <p className="subreddit">Subreddit: <br /> {np.subreddit}</p>
             </div>
 
             {np.isText && <p className="postText">{np.selftext}</p>}
@@ -124,7 +124,8 @@ export default function Post({ post, showCommentsIcon }) {
                         <img className="commentIcon" src={commentIcon} alt="comments"/>
                 </Link>
                 )}
-                <p className="created">Created: {unixToDate(np.created)}</p>
+                <p></p>
+                <p className="created">Created: <br /> {unixToDate(np.created)}</p>
             </div>
             
         </article>
