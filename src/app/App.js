@@ -1,5 +1,5 @@
 import React from "react";
-import {Route, HashRouterRouter, Routes} from "react-router-dom";
+import {Route, HashRouter, Routes} from "react-router-dom";
 import Posts from "../Features/posts/Posts.js";
 import Post from "../Features/posts/Post.js";
 import Comments from "../Features/comments/Comments.js";
