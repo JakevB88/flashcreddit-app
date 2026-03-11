@@ -5,12 +5,13 @@ PostsSlice will load the data to the store.
 import { useEffect, useState, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { selectPosts, fetchPosts } from "./PostsSlice";
+import { selectPostsStatus, selectPosts, fetchPosts } from "./PostsSlice";
 import Post from "./Post";
 import Search from "../search/Search";
 
 export default function Posts() {
   const posts = useSelector(selectPosts); // Retreive the state for Posts
+  const status = useSelector(selectPostsStatus);
   const dispatch = useDispatch();
 
   //read q from the URL
@@ -37,10 +38,30 @@ export default function Posts() {
     );
   }, [posts, q]);
 
+  //loading data
+  if (status === "loading") {
+    return <div className="postsStatus">Loading…</div>;
+  }
 
-  // Handle loading / empty state before .map()
+  //failed to retreive data
+  if (status === "failed") {
+    return (
+      <div className="postsStatus">
+        Sorry, we couldn’t load posts right now.
+        {status.error ? <div className="error-detail">{String(status.error)}</div> : null}
+      </div>
+    );
+  }
+
+  // No data at all
   if (!posts || Object.keys(posts).length === 0) {
-    return <div>Loading...</div>;
+    return (
+      <section className="postsStatus">
+        <h1>FlashcReddit</h1>
+        <Search value={q} onChange={setQ} />
+        <div className="empty">No posts available.</div>
+      </section>
+    );
   }
 
   return (

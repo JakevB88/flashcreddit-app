@@ -22,8 +22,9 @@ export default function Comments() {
 
   const comments = useSelector((s) => selectCommentsForPermalink(s, permalink)) || [];
   const status = useSelector((s) => selectCommentsStatusForPermalink(s, permalink));
+  const error = useSelector((s) => s.comments.byPermalink[permalink]?.error);
 
-
+  let content = ""
   const dispatch = useDispatch();
   
   // Fetch once on first mount if there is no data
@@ -39,8 +40,46 @@ export default function Comments() {
 
   //console.log(`comments: ${comments.name}`)
   //console.log(comments)
-  console.log(post)
+  //console.log(status)
+  //console.log("in Comments.js")
+  //console.log(post)
 
+  //loading data
+  if (status === "loading") {
+    content = (
+      <p className="infoMessage">Loading comments…</p>
+  );
+
+  }
+
+  else if (status === "failed") {
+    
+    content = (
+      <div className="errorMessage">
+        <p>Sorry, we couldn’t load comments right now.</p>
+        <p>{error}</p>
+        <button onClick={() => dispatch(fetchComments({ permalink }))}>
+          Retry
+        </button>
+      </div>
+    );
+  }
+
+  else if (status === "succeeded" && comments.length === 0) {
+    content = <p>No comments yet for this post!</p>;
+  }
+
+  else {
+    content = (
+      <ul className="comments-list">
+        {comments.map((comment) => (
+          <li key={comment.name}>
+            <Comment comment={comment} />
+          </li>
+        ))}
+      </ul>
+    );
+  }
 
   return (
     <section className="comments">
@@ -55,14 +94,10 @@ export default function Comments() {
         </Link>
       </div>
       
-      <Post post={post} showCommentsIcon={false}/>  
-      <ul className="comments-list">
-        {comments.map((comment) => (
-          <li key={comment.name} className="list">
-            <Comment comment={comment}/>
-          </li>
-        ))}
-      </ul>
+      <Post post={post} showCommentsIcon={false}/>
+
+      {content}
+
     </section>
   );
 }

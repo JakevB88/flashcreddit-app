@@ -53,6 +53,7 @@ export const postsSlice = createSlice({
 to be used like: "const posts = useSelector(selectPosts);"
 */
 export const selectPosts = (state) => state.posts.posts
+export const selectPostsStatus = (state) => state.posts.status
 
 export const selectPostByName = (state, name) =>
   state.posts.posts[name];

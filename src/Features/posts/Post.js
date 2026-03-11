@@ -1,4 +1,4 @@
-import React from "react";
+import {React} from "react";
 import { Link } from "react-router-dom";
 import ROUTES from "../../app/routes";
 import commentIcon from "./comment.png";
@@ -79,6 +79,7 @@ export function unixToDate(unix,{
 
 export default function Post({ post, showCommentsIcon }) {
     const np = normalisePost(post)
+
     //console.log(post.subreddit)
     console.log(post)
     return (

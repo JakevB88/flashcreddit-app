@@ -20,7 +20,11 @@ body {
   border-radius: 1dvh;
   padding: 5px
 }
-
+.loading, .postsStatus {
+  color: aliceblue;
+  font-size: 30px;
+  text-align: center;
+}
 .posts-list, .comments-list {
   list-style: none;
   padding-left: 0px
@@ -73,5 +77,23 @@ h2, .postText {
 
 .subreddit, .created {
   text-align: right;
-  
 }
+
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 2.4s ease;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
