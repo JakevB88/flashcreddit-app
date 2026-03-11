@@ -2,18 +2,17 @@
 CommentsSlice will load the data to the store.
 */
 
-import {React, useEffect} from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState} from "react";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { commentsSlice, selectComments, fetchComments} from "./CommentsSlice";
+import { fetchComments} from "./CommentsSlice";
 import { selectPostByName } from "../posts/PostsSlice";
 import { selectCommentsForPermalink } from "./CommentsSlice";
 import { selectCommentsStatusForPermalink } from "./CommentsSlice";
 import Comment from "./Comment";
 import Post from "../posts/Post";
 import homeIcon from "./home.png"
-import ROUTES from "../../app/routes";
 
 export default function Comments() {
   const { name } = useParams();
@@ -24,11 +23,13 @@ export default function Comments() {
   const status = useSelector((s) => selectCommentsStatusForPermalink(s, permalink));
   const error = useSelector((s) => s.comments.byPermalink[permalink]?.error);
 
+
   let content = ""
   const dispatch = useDispatch();
-  
+  const [fadeOut, setFadeOut] = useState(false);
+  const navigate = useNavigate();
+
   // Fetch once on first mount if there is no data
-  
   useEffect(() => {
     if (!permalink) return;
     if (status === 'idle') {
@@ -81,20 +82,33 @@ export default function Comments() {
     );
   }
 
+  const goToPosts = () => {
+    setFadeOut(true);
+
+    //wait for the faid, then navigate
+    setTimeout(() => {
+        navigate("/");
+    }, 350); // match your fade duration
+  };
+
   return (
-    <section className="comments">
+    <section className={`comments ${fadeOut ? "fade-out" : ""}`}>
       
       <h1>FlashcReddit</h1>
       
       <div className="commentsHeader">
         <h2>Post</h2>
         <p></p>
-        <Link to="/" className="homeIconLink">
-          <img className="homeIcon" src={homeIcon} alt="home"/>
-        </Link>
+      <img className="homeIcon" src={homeIcon} alt="home" onClick={goToPosts}/>
+      
+
       </div>
       
-      <Post post={post} showCommentsIcon={false}/>
+      <Post 
+        post={post} 
+        showCommentsIcon={false}
+        onNavigateToComments={() => setFadeOut(true)}
+      />
 
       {content}
 

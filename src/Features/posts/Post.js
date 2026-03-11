@@ -1,11 +1,6 @@
-import {React} from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ROUTES from "../../app/routes";
 import commentIcon from "./comment.png";
-
-
-
-
 
 export function normalisePost(raw) {
     // Handle both listing child shape and direct post data
@@ -41,7 +36,6 @@ export function normalisePost(raw) {
     };
 }
 
-
 export function GalleryComponent({ data }) {
     return (
         <div>
@@ -75,10 +69,21 @@ export function unixToDate(unix,{
 );
 }
 
-
-
-export default function Post({ post, showCommentsIcon }) {
+export default function Post({ post, showCommentsIcon, onNavigateToComments  }) {
     const np = normalisePost(post)
+    const navigate = useNavigate();
+
+    //to implement the fade when cliccing on comments link
+    const goToComments = () => {
+        if (onNavigateToComments) {
+            onNavigateToComments();
+        }
+
+        //wait for the faid, then navigate
+        setTimeout(() => {
+            navigate(ROUTES.commentsRoute(post.name));
+        }, 350); // match your fade duration
+    };
 
     //console.log(post.subreddit)
     console.log(post)
@@ -87,8 +92,7 @@ export default function Post({ post, showCommentsIcon }) {
         <article className="post">
             
             <h2>{np.title}</h2>
-                
-                   
+                                   
             <div className="postHeader">
                 <p className="author">Author: <br /> {np.author}</p>
                 <p className="score">⇧ {np.score} ⇩</p>
@@ -121,9 +125,7 @@ export default function Post({ post, showCommentsIcon }) {
 
             <div className="postFooter">
                 {showCommentsIcon && (
-                <Link to={ROUTES.commentsRoute(post.name)} className="commentIconLink">
-                        <img className="commentIcon" src={commentIcon} alt="comments"/>
-                </Link>
+                    <img className="commentIcon" src={commentIcon} alt="comments" onClick={goToComments}/>
                 )}
                 <p></p>
                 <p className="created">Created: <br /> {unixToDate(np.created)}</p>

@@ -18,6 +18,7 @@ export default function Posts() {
   const [searchParams] =  useSearchParams();
   const [q, setQ] = useState(searchParams.get('q') ?? '');
 
+  const [fadeOut, setFadeOut] = useState(false);
   // Fetch once on first mount if there is no data
   useEffect(() => {
     if (!posts || Object.keys(posts).length === 0) {
@@ -65,13 +66,18 @@ export default function Posts() {
   }
 
   return (
-    <section className="posts">
+    <section className={`posts ${fadeOut ? "fade-out" : ""}`}>
       <h1>FlashcReddit</h1>
       <Search value={q} onChange={setQ}/>
       <ul className="posts-list">
         {visiblePosts.map((post) => (
           <li key={post.name} className="list">
-            <Post post={post} showCommentsIcon={true} showHomeIcon={false}/>
+            <Post 
+              post={post} 
+              showCommentsIcon={true} 
+              showHomeIcon={false} 
+              onNavigateToComments={() => setFadeOut(true)}
+            />
           </li>
         ))}
       </ul>
