@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/flashcreddit-app/static/css/main.921a612b.css",
-    "main.js": "/flashcreddit-app/static/js/main.64732c0b.js",
+    "main.js": "/flashcreddit-app/static/js/main.a2fbc9cc.js",
     "static/js/453.d43a5c35.chunk.js": "/flashcreddit-app/static/js/453.d43a5c35.chunk.js",
     "static/media/comment.png": "/flashcreddit-app/static/media/comment.af29dc452aabecb139d1.png",
     "index.html": "/flashcreddit-app/index.html",
     "main.921a612b.css.map": "/flashcreddit-app/static/css/main.921a612b.css.map",
-    "main.64732c0b.js.map": "/flashcreddit-app/static/js/main.64732c0b.js.map",
+    "main.a2fbc9cc.js.map": "/flashcreddit-app/static/js/main.a2fbc9cc.js.map",
     "453.d43a5c35.chunk.js.map": "/flashcreddit-app/static/js/453.d43a5c35.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.921a612b.css",
-    "static/js/main.64732c0b.js"
+    "static/js/main.a2fbc9cc.js"
   ]
 }
