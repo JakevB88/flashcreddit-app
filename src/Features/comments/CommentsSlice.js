@@ -7,7 +7,7 @@ export const fetchComments = createAsyncThunk(
   async ({ permalink }) => {
     const safePermalink = permalink.startsWith('/') ? permalink : `/${permalink}`;
     const url = `https://old.reddit.com${permalink.replace(/\/$/, "")}.json?raw_json=1`;
-    //console.log(url)
+    console.log(url)
     const res = await fetch(url);
     const json = await res.json();
 
