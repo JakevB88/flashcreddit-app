@@ -1,3 +1,19 @@
+# FlashcReddit-app
+
+This app is created to have a very simplified view of the Reddit webb browser.
+you can:
+- View top 25 Reddit posts
+- view post comments by clicking on the posts comment cloud
+    - move back using the "home" button
+
+## code
+There are 2 main features in the code:
+- Posts: this section will fetch the posts from the Reddit API and display them
+- Comments: this section will fetch and display the comments of the Post that was requested
+
+
+##
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
